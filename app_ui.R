@@ -1,16 +1,39 @@
 library(shiny)
 library(shinythemes)
+library(ggplot2)
+library(plotly)
+library(tidyverse)
+
+owid_co2_data <- read.csv("https://raw.githubusercontent.com/info201a-au2022/a5-c1arkchin/main/sources/owid-co2-data.csv")
+#Make the data set ONLY countries:
+countries_owid_co2_data <- subset(subset(owid_co2_data, iso_code != ""), iso_code != "OWID_WRL")
+
+#Making a data set for my visualization page
+
+filtered_owid <- countries_owid_co2_data %>% 
+  select(country, year, cement_co2, flaring_co2, oil_co2, coal_co2, gas_co2, other_industry_co2) %>% 
+  rename(
+    cement = cement_co2, 
+    flare = flaring_co2, 
+    oil = oil_co2, 
+    coal = coal_co2, 
+    gas = gas_co2, 
+    other = other_industry_co2)
+vis_data <- filtered_owid %>% 
+  select(cement, flare, oil, coal, gas, other)
+selected_country <- unique(filtered_owid$country)
 
 introduction <- fluidPage(
   theme = shinytheme("darkly"),
   headerPanel("Introduction"),
-  p(strong("INFO201 A, A5 - By: Clark Chin")),
+  p(strong("INFO201 - A5 - By: Clark Chin")),
   img(src = "air.png", height = "300px", width = "450px"),
   p("The purpose of this project is to highlight the growth, changes, and highest records of Carbon Dioxide Emissions
-     on our planet. I want to find the countries with the highest emission rates. I also want to find the countries that have
+     on our planet. I want to find the countries with the highest emission rates in relation to their populations. 
+     I also want to find the countries that have
      started to raise their CO2 emissions. Ultimately, I hope to raise awareness for which countries
      are the leading producers of CO2 emissions, and also find which countries are on the track to becoming big
-     creators of emissions."),
+     creators of emissions on our planet."),
   h3("Value 1: Country With The Highest CO2 Emissions Per Capita"),
   HTML(paste0(
     "In 2021, the country with the highest CO2 emissions per capita was ",
@@ -41,7 +64,7 @@ visualization <- fluidPage(
       h4("Filter"),
         year_input <- selectInput(
           inputId = "selected_country",
-          choices = selected_country,            
+          choices = selected_country,        
           label = "Select a Country:"
         ),
         y_input <- selectInput(
@@ -54,9 +77,11 @@ visualization <- fluidPage(
       plotlyOutput("scatterplot"),
       p(),
       p("This scatter plot displays the CO2 Emissions of a given cause by Year in each Country.
-         One thing that is intersting to see is that when filtering for more established countries like The United States and China,
+         One thing that is interesting to see is that when filtering for more established countries like The United States and China,
          we see a gradual growth of CO2 emissions across the years, but while filtering for a country like Afghanistan,
-         we see points all over the place. This finding stays true while filtering for each type of Emission Material as well."),
+         we see points all over the place. This finding stays true while filtering for each type of Emission Material as well.
+         If we dive deeper into this pattern, we can start to see a direct correlation between less developed countries having
+         varying CO2 Emission results each year, while more developed countries have strong, gradual climbs in their CO2 Emissions per year."),
       )
     )
   )

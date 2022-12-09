@@ -3,10 +3,8 @@ library(shiny)
 library(plotly)
 library(dplyr)
 
-owid_co2_data <- read.csv("sources/owid-co2-data.csv")
-View(owid_co2_data)
-
-#Make the dataset ONLY countries:
+owid_co2_data <- read.csv("https://raw.githubusercontent.com/info201a-au2022/a5-c1arkchin/main/sources/owid-co2-data.csv")
+#Make the data set ONLY countries:
 countries_owid_co2_data <- subset(subset(owid_co2_data, iso_code != ""), iso_code != "OWID_WRL")
 
 #Making my 3 values
@@ -31,22 +29,6 @@ alltime_highest_co2_country <- countries_owid_co2_data %>%
   filter(co2 == max(co2, na.rm = TRUE)) %>% 
   pull(country)
 alltime_highest_co2_country
-
-
-#Making a data set for my visualization page
-
-filtered_owid <- countries_owid_co2_data %>% 
-  select(country, year, cement_co2, flaring_co2, oil_co2, coal_co2, gas_co2, other_industry_co2) %>% 
-  rename(
-         cement = cement_co2, 
-         flare = flaring_co2, 
-         oil = oil_co2, 
-         coal = coal_co2, 
-         gas = gas_co2, 
-         other = other_industry_co2)
-vis_data <- filtered_owid %>% 
-  select(cement, flare, oil, coal, gas, other)
-selected_country <- unique(filtered_owid$country)
 
 #calling server function
 server <- function(input, output) {
