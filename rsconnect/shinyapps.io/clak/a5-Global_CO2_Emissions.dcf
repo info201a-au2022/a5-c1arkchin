@@ -5,9 +5,9 @@ account: clak
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 7853024
-bundleId: 6618095
+bundleId: 6618124
 url: https://clak.shinyapps.io/a5-Global_CO2_Emissions/
-when: 1670629679.43132
-lastSyncTime: 1670629679.43133
+when: 1670630288.0542
+lastSyncTime: 1670630288.05422
 asMultiple: FALSE
 asStatic: FALSE

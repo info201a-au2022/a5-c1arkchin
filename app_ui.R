@@ -1,6 +1,7 @@
 library(shiny)
 library(shinythemes)
 
+#sourcing app_server.R
 source("app_server.R")
 
 # Making the introduction page
@@ -69,11 +70,10 @@ visualization <- fluidPage(
     )
   )
 
-# main title and titles of tabs
-#calling these pages as the UI function
+# Adding my pages to a ui function
 ui <- navbarPage(
   "Global Representation of CO2 Emissions",
-  tabPanel("Introduction", introduction), #page 1 : introduction
-  tabPanel("Visualization", visualization) #page 2 : visualization
+  tabPanel("Introduction", introduction),
+  tabPanel("Visualization", visualization)
 )
 

@@ -4,7 +4,7 @@ library(plotly)
 library(dplyr)
 
 owid_co2_data <- read.csv("https://raw.githubusercontent.com/info201a-au2022/a5-c1arkchin/main/sources/owid-co2-data.csv")
-#Make the data set ONLY countries:
+#Make the data set ONLY countries (taking out the WORLD/(Global)) values:
 countries_owid_co2_data <- subset(subset(owid_co2_data, iso_code != ""), iso_code != "OWID_WRL")
 
 #Making my 3 values
