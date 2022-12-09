@@ -1,28 +1,9 @@
 library(shiny)
 library(shinythemes)
-library(ggplot2)
-library(plotly)
-library(tidyverse)
 
-owid_co2_data <- read.csv("https://raw.githubusercontent.com/info201a-au2022/a5-c1arkchin/main/sources/owid-co2-data.csv")
-#Make the data set ONLY countries:
-countries_owid_co2_data <- subset(subset(owid_co2_data, iso_code != ""), iso_code != "OWID_WRL")
+source("app_server.R")
 
-#Making a data set for my visualization page
-
-filtered_owid <- countries_owid_co2_data %>% 
-  select(country, year, cement_co2, flaring_co2, oil_co2, coal_co2, gas_co2, other_industry_co2) %>% 
-  rename(
-    cement = cement_co2, 
-    flare = flaring_co2, 
-    oil = oil_co2, 
-    coal = coal_co2, 
-    gas = gas_co2, 
-    other = other_industry_co2)
-vis_data <- filtered_owid %>% 
-  select(cement, flare, oil, coal, gas, other)
-selected_country <- unique(filtered_owid$country)
-
+# Making the introduction page
 introduction <- fluidPage(
   theme = shinytheme("darkly"),
   headerPanel("Introduction"),
@@ -55,7 +36,7 @@ introduction <- fluidPage(
   )),
 )
 
-# visualization page
+# Making the visualization page
 visualization <- fluidPage(
   headerPanel("Visualization"),
   sidebarLayout(
@@ -63,14 +44,16 @@ visualization <- fluidPage(
       # widgets
       h4("Filter"),
         year_input <- selectInput(
+          label = "Select a Country:",
           inputId = "selected_country",
-          choices = selected_country,        
-          label = "Select a Country:"
+          choices = selected_country       
+          
         ),
         y_input <- selectInput(
+          label = "Select an Emission Material:",
           inputId = "y_var",
-          choices = colnames(vis_data),            
-          label = "Select an Emission Material:")
+          choices = colnames(element_choices)         
+          )
         ),
     # data visualization plot and captions
     mainPanel(
@@ -93,3 +76,4 @@ ui <- navbarPage(
   tabPanel("Introduction", introduction), #page 1 : introduction
   tabPanel("Visualization", visualization) #page 2 : visualization
 )
+
