@@ -52,7 +52,7 @@ visualization <- fluidPage(
         ),
         y_input <- selectInput(
           label = "Select an Emission Material:",
-          inputId = "y_var",
+          inputId = "element",
           choices = colnames(element_choices)         
           )
         ),

@@ -64,11 +64,11 @@ server <- function(input, output) {
       filter(country == input$selected_country)
     
   #Plotting the visualization data set I made
-    scatter_plot <- ggplot(scatter_df, aes_string(x = scatter_df$year, y = input$y_var)) + 
+    scatter_plot <- ggplot(scatter_df, aes_string(x = scatter_df$year, y = input$element)) + 
       xlab("Year") +
-      ylab(paste("CO2 emission caused by", input$y_var, "(Million Tonnes)")) +
+      ylab(paste("CO2 emission caused by", input$element, "(Million Tonnes)")) +
       ggtitle(paste("Change of CO2 Emission Types each year from",
-                    input$y_var, "in", input$selected_country)) +
+                    input$element, "in", input$selected_country)) +
       geom_point()
     
     ggplotly(scatter_plot) 
